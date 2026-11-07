@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#16181D">
+<meta name="description" content="Calcule o custo real de um funcionário CLT para a empresa, os impostos pagos no ano e quantos dias você trabalha só para pagar tributos. Regras de 2026.">
+<title>Holerite Oculto · Quanto custa um CLT de verdade?</title>
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pt_BR">
+<meta property="og:title" content="Holerite Oculto · Quanto custa um CLT de verdade?">
+<meta property="og:description" content="Seu salário é só uma parte. Veja quanto você custa pra empresa e quantos dias trabalha só pra pagar imposto.">
+<meta property="og:url" content="https://gabrieldomingos2.github.io/holerite-oculto/">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2316181D'/%3E%3Cpath d='M9 7h14v18l-3.5-2-3.5 2-3.5-2L9 25z' fill='%23fff'/%3E%3Crect x='12' y='11' width='8' height='2' rx='1' fill='%23D4502A'/%3E%3Crect x='12' y='15' width='6' height='2' rx='1' fill='%2316181D'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brandbar">
+      <span class="brand">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="8" fill="#16181D"/><path d="M9 7h14v18l-3.5-2-3.5 2-3.5-2L9 25z" fill="#fff"/><rect x="12" y="11" width="8" height="2" rx="1" fill="#D4502A"/><rect x="12" y="15" width="6" height="2" rx="1" fill="#16181D"/></svg>
+        Holerite Oculto
+      </span>
+      <span class="tag">Regras de 2026</span>
+    </div>
+    <h1>Seu salário é só uma parte. Veja quanto você <em>custa de verdade</em> pra empresa.</h1>
+    <p class="sub">Digite seu salário bruto. A conta mostra os encargos da empresa, o imposto que você paga no ano e quantos dias trabalha só pro governo.</p>
+  </header>
+
+  <div class="grid">
+    <aside class="side">
+      <!-- Entrada principal -->
+      <section class="card form-main" id="formMain">
+        <div class="field">
+          <label for="sal">Salário bruto mensal (CLT)</label>
+          <div class="money"><span>R$</span><input id="sal" inputmode="decimal" enterkeyhint="done" value="5.000,00" autocomplete="off" aria-describedby="chipsHint"></div>
+          <div class="chips" id="chips" role="group" aria-label="Valores rápidos">
+            <button type="button" data-v="1621">Mínimo</button>
+            <button type="button" data-v="3000">3 mil</button>
+            <button type="button" data-v="5000">5 mil</button>
+            <button type="button" data-v="8000">8 mil</button>
+            <button type="button" data-v="12000">12 mil</button>
+            <button type="button" data-v="20000">20 mil</button>
+          </div>
+          <div class="hint" id="chipsHint">Toque num valor ou digite o seu.</div>
+        </div>
+
+        <div class="field inline">
+          <label id="depsLbl">Dependentes no IR</label>
+          <div class="stepper" role="group" aria-labelledby="depsLbl"><button type="button" data-step="-1" aria-label="Menos um dependente">−</button><output id="deps" aria-live="polite">0</output><button type="button" data-step="1" aria-label="Mais um dependente">+</button></div>
+        </div>
+      </section>
+
+      <!-- Ajustes -->
+      <details class="card form-adv" id="adv" open>
+        <summary class="adv-sum">
+          <span><b>Ajustar o cálculo</b><small>Regime da empresa, benefícios e custos extras</small></span>
+        </summary>
+        <div class="adv-body">
+          <div class="field">
+            <label for="regime">Regime tributário da empresa</label>
+            <select id="regime">
+              <option value="geral">Lucro Presumido ou Real</option>
+              <option value="simples">Simples Nacional (Anexos I, II, III e V)</option>
+              <option value="simples4">Simples Nacional (Anexo IV)</option>
+            </select>
+            <div class="hint" id="regimeHint">Empresa paga INSS patronal de 20% + RAT + terceiros.</div>
+          </div>
+
+          <div class="field" id="ratField">
+            <label for="rat">Risco da atividade (RAT)</label>
+            <select id="rat">
+              <option value="0.01">Leve – 1% (escritório, comércio)</option>
+              <option value="0.02" selected>Médio – 2%</option>
+              <option value="0.03">Grave – 3% (indústria, construção)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label class="toggle"><input type="checkbox" id="multa"><span>Incluir provisão da multa de 40% do FGTS<small>Só é paga se demitir sem justa causa, mas muita empresa guarda esse dinheiro.</small></span></label>
+          </div>
+
+          <details class="sub-d">
+            <summary>Benefícios <small>opcional</small></summary>
+            <div class="inner">
+              <div class="field">
+                <label for="vr">Vale-refeição / alimentação por mês</label>
+                <div class="small-money"><span>R$</span><input id="vr" inputmode="decimal" enterkeyhint="next" value="0"></div>
+              </div>
+              <div class="field">
+                <label for="plano">Plano de saúde (parte da empresa) por mês</label>
+                <div class="small-money"><span>R$</span><input id="plano" inputmode="decimal" enterkeyhint="next" value="0"></div>
+              </div>
+              <div class="field">
+                <label for="vt">Gasto com transporte por mês</label>
+                <div class="small-money"><span>R$</span><input id="vt" inputmode="decimal" enterkeyhint="done" value="0"></div>
+                <div class="hint">A empresa paga o que passar de 6% do seu salário.</div>
+              </div>
+            </div>
+          </details>
+
+          <details class="sub-d">
+            <summary>Custos indiretos <small>ligado</small></summary>
+            <div class="inner">
+              <div class="field">
+                <label class="toggle"><input type="checkbox" id="indOn" checked><span>Incluir custos indiretos<small>O que não é imposto, mas a empresa gasta de verdade. Os valores são estimativas, ajuste à vontade.</small></span></label>
+              </div>
+              <div id="indFields">
+                <div class="field">
+                  <label for="anos">Tempo médio de casa (anos)</label>
+                  <input id="anos" class="small-input" type="number" inputmode="numeric" min="1" max="30" value="3">
+                  <div class="hint">Usado pra provisionar o aviso prévio (30 dias + 3 por ano, até 90).</div>
+                </div>
+                <div class="row2">
+                  <div class="field">
+                    <label for="equip">Equipamento e software /mês</label>
+                    <div class="small-money"><span>R$</span><input id="equip" inputmode="decimal" enterkeyhint="next" value="300,00"></div>
+                  </div>
+                  <div class="field">
+                    <label for="seguro">Seguro de vida /mês</label>
+                    <div class="small-money"><span>R$</span><input id="seguro" inputmode="decimal" enterkeyhint="next" value="15,00"></div>
+                  </div>
+                </div>
+                <div class="row2">
+                  <div class="field">
+                    <label for="exames">Exames ocupacionais /ano</label>
+                    <div class="small-money"><span>R$</span><input id="exames" inputmode="decimal" enterkeyhint="next" value="250,00"></div>
+                  </div>
+                  <div class="field">
+                    <label for="treino">Recrutamento e treinamento /ano</label>
+                    <div class="small-money"><span>R$</span><input id="treino" inputmode="decimal" enterkeyhint="done" value="1.000,00"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="sub-d">
+            <summary>Impostos no seu dia a dia</summary>
+            <div class="inner">
+              <div class="field">
+                <label for="cons">Imposto embutido no que você compra: <b id="consV">28%</b></label>
+                <input type="range" id="cons" min="0" max="40" step="1" value="28">
+                <div class="hint">ICMS, ISS, PIS/Cofins, IPI… Média de ~28% do que você gasta (estimativa com base no IBPT). Considera que você gasta todo o líquido.</div>
+              </div>
+              <div class="field">
+                <label for="patr">IPVA + IPTU por ano</label>
+                <div class="small-money"><span>R$</span><input id="patr" inputmode="decimal" enterkeyhint="done" value="0"></div>
+              </div>
+            </div>
+          </details>
+        </div>
+      </details>
+    </aside>
+
+    <main class="results">
+      <section class="card hero" id="hero" aria-live="polite">
+        <div class="mult" id="mult">1,0×</div>
+        <div class="lbl" id="heroLbl">Custo real pra empresa manter você (média por mês)</div>
+        <div class="big" id="custoMes">R$ 0</div>
+        <div class="lbl" id="heroLine">—</div>
+        <div class="minline" id="minLine"></div>
+        <div class="hero-cols">
+          <div><div class="k">Custo no ano</div><div class="v" id="custoAno">—</div></div>
+          <div><div class="k">Seu líquido no mês</div><div class="v" id="liqMes">—</div></div>
+          <div><div class="k">Fica com o governo</div><div class="v gov-l" id="govPct">—</div></div>
+        </div>
+        <button type="button" class="share" id="shareBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span id="shareTxt">Compartilhar resultado</span>
+        </button>
+      </section>
+
+      <section class="card">
+        <h2>Pra onde vai cada real que a empresa gasta</h2>
+        <p class="h2sub">Tudo que a empresa desembolsa no ano com você, dividido por destino.</p>
+        <div class="bar" id="bar"></div>
+        <div class="legend" id="legend"></div>
+      </section>
+
+      <section class="card">
+        <h2>Quanto <span class="gov-c">você</span> paga de imposto no ano</h2>
+        <p class="h2sub">Descontado no holerite + o que vem escondido no preço das coisas.</p>
+        <div class="two">
+          <div class="stat"><div class="k">Total de impostos no ano</div><div class="v gov-c" id="impAno">—</div><div class="s" id="impPct">—</div></div>
+          <div class="stat"><div class="k">Dias trabalhados só pra pagar imposto</div><div class="v gov-c" id="diasV">—</div><div class="s" id="diasS">—</div></div>
+        </div>
+        <table id="tabPes"></table>
+      </section>
+
+      <section class="card">
+        <h2>Seu ano trabalhando pro governo</h2>
+        <p class="h2sub">Cada quadradinho é um dia de 2026. Os vermelhos vão inteiros pra impostos.</p>
+        <div class="seg" id="seg" role="tablist">
+          <button type="button" class="on" data-mode="voce" role="tab" aria-selected="true">Só seus impostos</button>
+          <button type="button" data-mode="tudo" role="tab" aria-selected="false">Com encargos da empresa</button>
+        </div>
+        <p class="freedom" id="freedom">—</p>
+        <div class="cal" id="cal" aria-hidden="true"></div>
+        <div class="bench">Pra comparar: segundo o IBPT, o brasileiro médio trabalhou <b>150 dias</b> em 2026 só pra pagar tributos (41,1% da renda), até 30 de maio.</div>
+      </section>
+
+      <section class="card">
+        <h2>Detalhe do custo da empresa</h2>
+        <p class="h2sub">Média por mês e total do ano (já inclui 13º, férias e 1/3).</p>
+        <table id="tabEmp"></table>
+      </section>
+    </main>
+  </div>
+
+  <footer class="foot">
+    <details>
+      <summary>Como a conta é feita</summary>
+      <ul>
+        <li><b>Remuneração anual</b> = 12 salários + 13º + 1/3 de férias (13,33 salários).</li>
+        <li><b>INSS do funcionário 2026</b>: 7,5% até R$ 1.621,00; 9% até R$ 2.902,84; 12% até R$ 4.354,27; 14% até o teto de R$ 8.475,55 (progressivo).</li>
+        <li><b>IR 2026</b> (Lei 15.270/2025): tabela progressiva com desconto simplificado de R$ 607,20 ou deduções legais (o que for melhor), isenção pra quem ganha até R$ 5.000 e redutor de R$ 978,62 − 0,133145 × salário até R$ 7.350. 13º calculado separado.</li>
+        <li><b>Encargos da empresa</b> (Presumido/Real): INSS patronal 20%, RAT 1–3%, terceiros 5,8% (Sistema S, salário-educação, Incra, Sebrae) e FGTS 8%. No Simples (exceto Anexo IV), a contribuição patronal já vem dentro do DAS, então só entra o FGTS. Não considera desoneração da folha (CPRB).</li>
+        <li><b>FGTS</b> é dinheiro seu, mas fica preso numa conta. Por isso aparece separado de "governo".</li>
+        <li><b>Custos indiretos</b> são estimativas editáveis. O aviso prévio segue a Lei 12.506/2011 (30 dias + 3 por ano trabalhado, até 90) e é diluído pelos anos de casa, supondo demissão sem justa causa. Não entram hora extra, adicionais (noturno, insalubridade, periculosidade), PLR nem estrutura física (aluguel, energia).</li>
+        <li><b>Impostos no consumo</b> são estimativa: aplica a porcentagem escolhida sobre o seu líquido anual.</li>
+        <li><b>Dias</b> = impostos ÷ renda bruta anual × 365 (mesmo método do IBPT). Na visão "com encargos", usa tudo que vai pro governo ÷ custo total da empresa.</li>
+      </ul>
+    </details>
+    <p>Simulação educativa. Não substitui o cálculo do seu contador ou do RH. Fontes: <a href="https://www.contabilizei.com.br/contabilidade-online/tabela-inss/" target="_blank" rel="noopener">tabela INSS 2026</a>, <a href="https://caltrab.com/?p=4768" target="_blank" rel="noopener">tabela IRRF 2026</a>, <a href="https://www.infomoney.com.br/?p=3352708" target="_blank" rel="noopener">estudo IBPT 2026</a>.</p>
+  </footer>
+</div>
+
+<div class="sticky hide" id="sticky">
+  <div class="st-txt"><div class="k">Custo pra empresa /mês</div><div class="v"><span id="stV">—</span> <span class="st-m" id="stM"></span></div></div>
+  <a href="#hero" id="stGo">Ver resultado</a>
+</div>
+
+<script src="assets/js/tributos-2026.js"></script>
+<script src="assets/js/app.js"></script>
+</body>
+</html>
